@@ -1,0 +1,16 @@
+{
+  "name": "playwright-swag-labs-tests",
+  "version": "1.0.0",
+  "description": "E2E test automation project using Playwright and TypeScript for Swag Labs. Implements Page Object Model, fixtures, parallel execution, and HTML reporting.",
+  "main": "index.js",
+"scripts": {
+  "test": "playwright test",
+  "report": "playwright show-report"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}
