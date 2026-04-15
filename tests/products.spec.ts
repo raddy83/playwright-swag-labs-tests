@@ -1,42 +1,28 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { ProductsPage } from '../pages/ProductsPage';
+import { test, expect } from '../fixtures/testFixtures';
 import { CartPage } from '../pages/CartPage';
 
 test.describe('Products and Cart', () => {
 
-  test.beforeEach(async ({ page }) => {
-    const login = new LoginPage(page);
-    await login.goto();
-    await login.login('standard_user', 'secret_sauce');
-  });
+  test('sort products Z-A', async ({ productsPage }) => {
+    await productsPage.sortBy('za');
 
-  test('sort products Z-A', async ({ page }) => {
-    const products = new ProductsPage(page);
-
-    await products.sortBy('za');
-
-    const names = await products.getItemNames();
+    const names = await productsPage.getItemNames();
 
     expect(names[0]).toBe('Test.allTheThings() T-Shirt (Red)');
   });
 
-  test('add single product to cart', async ({ page }) => {
-    const products = new ProductsPage(page);
-
-    await products.addFirstItemToCart();
-
-    await expect(products.cartBadge).toHaveText('1');
+  test('add single product to cart', async ({ productsPage }) => {
+    await productsPage.addFirstItemToCart();
+    await expect(productsPage.cartBadge).toHaveText('1');
   });
 
-  test('add multiple products and verify cart', async ({ page }) => {
-    const products = new ProductsPage(page);
+  test('add multiple products and verify cart', async ({ productsPage, page }) => {
     const cart = new CartPage(page);
 
-    await products.addItemByName('Sauce Labs Backpack');
-    await products.addItemByName('Sauce Labs Bike Light');
+    await productsPage.addItemByName('Sauce Labs Backpack');
+    await productsPage.addItemByName('Sauce Labs Bike Light');
 
-    await products.openCart();
+    await productsPage.openCart();
 
     const items = await cart.getCartItems();
 
@@ -44,12 +30,11 @@ test.describe('Products and Cart', () => {
     expect(items).toContain('Sauce Labs Bike Light');
   });
 
-  test('remove product from cart', async ({ page }) => {
-    const products = new ProductsPage(page);
+  test('remove product from cart', async ({ productsPage, page }) => {
     const cart = new CartPage(page);
 
-    await products.addItemByName('Sauce Labs Backpack');
-    await products.openCart();
+    await productsPage.addItemByName('Sauce Labs Backpack');
+    await productsPage.openCart();
 
     await cart.removeItem('Sauce Labs Backpack');
 
