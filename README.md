@@ -1,4 +1,6 @@
 ## 🎯 Design Decisions & Trade-offs
+Decisions about chosen framework.
+
 
 ### Why Playwright + TypeScript
 
